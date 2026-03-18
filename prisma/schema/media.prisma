@@ -1,0 +1,46 @@
+model Media {
+  id            String    @id @default(uuid())
+  title         String
+  synopsis      String
+  releaseYear   Int
+  director      String
+  cast          Cast[]
+  genres        Genre[]
+  type          MediaType
+  pricing       MediaPricing @default(FREE)
+  streamingLink String?
+  posterUrl     String?
+  
+  reviews       Review[]
+  watchlist     Watchlist[]
+  purchases     Purchase[]
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("media")
+}
+
+model Genre {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  media     Media[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("genre")
+}
+
+model Cast {
+  id        String   @id @default(uuid())
+  name      String
+  role      CastRole
+  bio       String?
+  media     Media[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("cast")
+}

@@ -1,0 +1,57 @@
+model Review {
+  id          String       @id @default(uuid())
+  rating      Int          // 1-10
+  content     String
+  tags        String[]
+  isSpoiler   Boolean      @default(false)
+  status      ReviewStatus @default(PENDING)
+  
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  
+  mediaId     String
+  media       Media        @relation(fields: [mediaId], references: [id])
+  
+  likes       Like[]
+  comments    Comment[]
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("review")
+}
+
+model Comment {
+  id          String    @id @default(uuid())
+  content     String
+  
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  
+  reviewId    String
+  review      Review    @relation(fields: [reviewId], references: [id])
+  
+  parentId    String?
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+  
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("comment")
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id])
+  
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reviewId])
+  @@map("like")
+}

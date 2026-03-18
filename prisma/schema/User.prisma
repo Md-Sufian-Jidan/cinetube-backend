@@ -4,12 +4,21 @@ model User {
   email         String
   emailVerified Boolean   @default(false)
   image         String?
+  role          UserRole  @default(USER)
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  
+  reviews       Review[]
+  comments      Comment[]
+  likes         Like[]
+  watchlist     Watchlist[]
+  subscriptions UserSubscription[]
+  purchases     Purchase[]
 
-  @@unique([email])
+  @@unique([email], name: "user_email_key")
   @@map("user")
 }
 

@@ -1,0 +1,37 @@
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum MediaType {
+  MOVIE
+  SERIES
+}
+
+enum MediaPricing {
+  FREE
+  PREMIUM
+}
+
+enum CastRole {
+  ACTOR
+  DIRECTOR
+}
+
+enum PlanDuration {
+  FREE
+  MONTHLY
+  YEARLY
+}
+
+enum PurchaseType {
+  BUY
+  RENT
+}
+
+enum ReviewStatus {
+  PENDING
+  PUBLISHED
+  UNPUBLISHED
+}
+
