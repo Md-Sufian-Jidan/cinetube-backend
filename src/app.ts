@@ -5,33 +5,37 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./app/lib/auth";
 import status from 'http-status';
+import router from './app/routes';
+import { sendResponse } from './app/utils/sendResponse';
 
 const app: Application = express();
 
-app.all('/api/auth/*', toNodeHandler(auth));
+app.all('/api/auth', toNodeHandler(auth));
 // parsers
 app.use(express.json());
 app.use(cors());
 
 // application routes
-// app.use('/api/v1', router);
+app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
-  res.status(status.OK).json({
+  sendResponse(res, {
     success: true,
+    statusCode: status.OK,
     message: "CineTube server is running successfully",
-    data: null,
-    author: {
-      name: "Md Abu Sufian Jidan",
-      version: "1.0.0",
-      github: "https://github.com/Md-Sufian-Jidan",
-      linkedin: "https://www.linkedin.com/in/md-sufian-jidan/",
-      portfolio: "https://mdabusufianjidan-portfolio.vercel.app",
+    data: {
+      author: {
+        name: "Md Abu Sufian Jidan",
+        version: "1.0.0",
+        github: "https://github.com/Md-Sufian-Jidan",
+        linkedin: "https://www.linkedin.com/in/md-sufian-jidan/",
+        portfolio: "https://mdabusufianjidan-portfolio.vercel.app",
+      }
     }
   });
 });
 
-
 app.use(globalErrorHandler);
 app.use(notFound);
+
 export default app;

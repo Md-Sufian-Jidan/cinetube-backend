@@ -3,6 +3,12 @@ enum UserRole {
   ADMIN
 }
 
+enum Status {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
 enum MediaType {
   MOVIE
   SERIES
