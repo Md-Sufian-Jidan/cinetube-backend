@@ -21,7 +21,8 @@ interface EnvConfig {
     SMTP_USER: string;
     SMTP_PASS: string;
     SMTP_FROM: string;
-  }
+  };
+  STRIPE_SECRET_KEY: string;
 }
 
 const loadEnvVar = (): EnvConfig => {
@@ -40,7 +41,8 @@ const loadEnvVar = (): EnvConfig => {
     'EMAIL_SENDER_SMTP_PORT',
     'EMAIL_SENDER_SMTP_USER',
     'EMAIL_SENDER_SMTP_PASS',
-    'EMAIL_SENDER_SMTP_FROM'
+    'EMAIL_SENDER_SMTP_FROM',
+    'STRIPE_SECRET_KEY'
   ]
 
   envVariables.forEach((envVar) => {
@@ -67,6 +69,7 @@ const loadEnvVar = (): EnvConfig => {
       SMTP_PASS: process.env.EMAIL_SENDER_SMTP_PASS!,
       SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM!,
     },
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY!,
   };
 };
 

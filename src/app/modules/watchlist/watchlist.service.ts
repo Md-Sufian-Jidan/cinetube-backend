@@ -52,7 +52,7 @@ const removeWatchlistFromDB = async (userId: string, mediaId: string) => {
         throw new AppError(status.NOT_FOUND, "Media not found in watchlist");
     }
 
-    const result = await prisma.watchlist.delete({
+    await prisma.watchlist.delete({
         where: {
             userId_mediaId: {
                 userId,
@@ -61,7 +61,7 @@ const removeWatchlistFromDB = async (userId: string, mediaId: string) => {
         },
     });
 
-    return result;
+    return null;
 };
 
 export const WatchlistService = {
