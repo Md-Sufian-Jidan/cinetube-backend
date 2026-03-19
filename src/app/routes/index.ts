@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { MediaRoutes } from "../modules/media/media.route";
 import { ReviewRoutes } from "../modules/review/review.route";
+import { WatchlistRoutes } from "../modules/watchlist/watchlist.route";
 
 const router = Router();
 
@@ -12,6 +13,10 @@ const routes = [
     {
         path: "/reviews",
         route: ReviewRoutes
+    },
+    {
+        path: "/watchlist",
+        route: WatchlistRoutes
     }
 ];
 
