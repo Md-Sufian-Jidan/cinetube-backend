@@ -6,13 +6,5 @@
         {
             "amount": 99.99
         }
-    ],
-    "subscribe": [
-        {
-            "planId": "uuid-for-monthly-plan"
-        },
-        {
-            "planId": "uuid-for-yearly-plan"
-        }
     ]
 }
