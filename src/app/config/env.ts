@@ -14,6 +14,7 @@ interface EnvConfig {
   GITHUB_CLIENT_SECRET: string;
   ADMIN_PASSWORD: string;
   ADMIN_EMAIL: string;
+  FRONTEND_URL: string;
 }
 
 const loadEnvVar = (): EnvConfig => {
@@ -26,7 +27,8 @@ const loadEnvVar = (): EnvConfig => {
     'GITHUB_CLIENT_ID',
     'GITHUB_CLIENT_SECRET',
     'ADMIN_PASSWORD',
-    'ADMIN_EMAIL'
+    'ADMIN_EMAIL',
+    'FRONTEND_URL'
   ]
 
   envVariables.forEach((envVar) => {
@@ -45,6 +47,7 @@ const loadEnvVar = (): EnvConfig => {
     GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET!,
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD!,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL!,
+    FRONTEND_URL: process.env.FRONTEND_URL!,
   };
 };
 

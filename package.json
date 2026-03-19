@@ -9,7 +9,7 @@
     "build": "tsc",
     "lint": "eslint src/**/*.ts",
     "lint:fix": "eslint src/**/*.ts --fix",
-    "seed": "tsx src/app/utils/seedAdmin.ts",
+    "seed:admin": "tsx src/app/utils/seedAdmin.ts",
     "format": "prettier --write .",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",

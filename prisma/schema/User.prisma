@@ -19,7 +19,7 @@ model User {
   subscriptions UserSubscription[]
   purchases     Purchase[]
 
-  @@unique([email], name: "user_email_key")
+  @@unique([email])
   @@map("user")
 }
 

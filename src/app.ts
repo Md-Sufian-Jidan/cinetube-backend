@@ -7,13 +7,20 @@ import { auth } from "./app/lib/auth";
 import status from 'http-status';
 import router from './app/routes';
 import { sendResponse } from './app/utils/sendResponse';
+import { env } from './app/config/env';
 
 const app: Application = express();
 
-app.all('/api/auth', toNodeHandler(auth));
+app.all("/api/auth/*any", toNodeHandler(auth));
 // parsers
-app.use(express.json());
-app.use(cors());
+app.use(express.json({ limit: "16kb" }));
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+app.use(cors({
+  origin: [env.FRONTEND_URL, env.BETTER_AUTH_URL, "http://localhost:3000", "http://localhost:7000"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // application routes
 app.use('/api/v1', router);
@@ -30,7 +37,9 @@ app.get('/', (req: Request, res: Response) => {
         github: "https://github.com/Md-Sufian-Jidan",
         linkedin: "https://www.linkedin.com/in/md-sufian-jidan/",
         portfolio: "https://mdabusufianjidan-portfolio.vercel.app",
-      }
+      },
+      host: req.hostname,
+      time: new Date().toISOString(),
     }
   });
 });

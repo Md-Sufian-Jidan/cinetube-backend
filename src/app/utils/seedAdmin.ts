@@ -1,47 +1,66 @@
-import { env } from "../config/env"
-import { Status, UserRole } from "../../generated/prisma/enums"
+import { env } from "../config/env";
+import { Status, UserRole } from "../../generated/prisma/enums";
 import { prisma } from "../lib/prisma";
+import { auth } from "../lib/auth";
 import AppError from "../errors/AppError";
 import status from "http-status";
-import { auth } from "../lib/auth";
 
-export const seedAdmin = async () => {
+const seedAdmin = async () => {
+    const adminData = {
+        name: "Admin",
+        email: env.ADMIN_EMAIL,
+        password: env.ADMIN_PASSWORD,
+        role: UserRole.ADMIN,
+        status: Status.ACTIVE,
+    };
+
     try {
         const existingAdmin = await prisma.user.findUnique({
             where: {
-                email: env.ADMIN_EMAIL
-            }
+                email: adminData.email,
+            },
         });
 
         if (existingAdmin) {
-            console.log("Admin already exists. Skipping...");
+            console.log("⚠️ Admin already exists. Skipping...");
             return;
         }
 
-        const adminUser = await auth.api.signup({
-            body: {
-                email: env.ADMIN_EMAIL,
-                password: env.ADMIN_PASSWORD,
-                name: "Admin",
-                role: UserRole.ADMIN,
-            }
+        const result = await auth.api.signUpEmail({
+            body: adminData
         });
 
-        await prisma.$transaction(async (tx) => {
-            await tx.user.update({
-                where: { id: adminUser.user.id },
-                data: { emailVerified: true }
-            });
+        if (!result?.user?.id) {
+            throw new AppError(status.INTERNAL_SERVER_ERROR, "Invalid response from auth signup");
+        }
+
+        await prisma.user.update({
+            where: {
+                id: result.user.id,
+            },
+            data: {
+                emailVerified: true,
+                status: Status.ACTIVE,
+            },
         });
 
-        console.log("✅ Admin created successfully");
-    } catch (error) {
-        console.error("❌ Error seeding admin:", error);
+        console.log("✅ Admin created and verified successfully!");
+    } catch (error: any) {
+        console.error("❌ Error seeding admin:", {
+            message: error?.message,
+            stack: error?.stack,
+        });
+
+        console.log("🧹 Cleaning up partial data...");
 
         await prisma.user.deleteMany({
             where: {
-                email: env.ADMIN_EMAIL
-            }
+                email: adminData.email,
+            },
         });
+
+        console.log("🧹 Cleanup completed.");
     }
 };
+
+seedAdmin();
