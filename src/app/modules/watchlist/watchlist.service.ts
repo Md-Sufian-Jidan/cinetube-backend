@@ -39,7 +39,6 @@ const getWatchlistFromDB = async (userId: string) => {
 };
 
 const removeWatchlistFromDB = async (userId: string, mediaId: string) => {
-    // Check if watchlist item exists
     const watchlist = await prisma.watchlist.findUnique({
         where: {
             userId_mediaId: {
