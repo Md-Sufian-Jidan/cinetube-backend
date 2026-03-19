@@ -1,8 +1,9 @@
 import { prisma } from "../../lib/prisma";
 import AppError from "../../errors/AppError";
 import status from "http-status";
+import { IReview } from "./review.interface";
 
-const createReviewInDB = async (payload: any) => {
+const createReviewInDB = async (payload: IReview) => {
     // Check if media exists
     const media = await prisma.media.findUnique({
         where: { id: payload.mediaId },
