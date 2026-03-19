@@ -135,6 +135,15 @@ const updateMediaInDB = async (id: string, data: Partial<IMedia>) => {
     return result;
 };
 
+const deleteMediaFromDB = async (id: string) => {
+    const result = await prisma.media.delete({
+        where: {
+            id,
+        },
+    });
+    return result;
+};
+
 export const MediaService = {
     createMedia,
     getAllMediaFromDB,

@@ -1,0 +1,37 @@
+[
+    {
+        "rating": 9,
+        "content": "Absolutely mind-bending! Christopher Nolan outdid himself with Inception. The layers of dreams and the music are just perfect.",
+        "tags": ["Mind-blowing", "Must-watch", "Sci-Fi"],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-1"
+    },
+    {
+        "rating": 10,
+        "content": "Breaking Bad is arguably the best series ever made. The character development of Walter White is unparalleled.",
+        "tags": ["Masterpiece", "Classic", "Drama"],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-2"
+    },
+    {
+        "rating": 8,
+        "content": "The Dark Knight is the best Batman movie. Heath Ledger's Joker is legendary. A bit dark but very engaging.",
+        "tags": ["Legendary", "Action", "Joker"],
+        "isSpoiler": true,
+        "mediaId": "placeholder-media-id-3"
+    },
+    {
+        "rating": 7,
+        "content": "Stranger Things has a great 80s vibe. The kids are great actors, but some plot points felt a bit repetitive in later seasons.",
+        "tags": ["Nostalgia", "80s", "Mystery"],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-4"
+    },
+    {
+        "rating": 9,
+        "content": "Pulp Fiction is a cult classic for a reason. Tarantino's dialogue is sharp and the non-linear storytelling is brilliant.",
+        "tags": ["Cult Classic", "Tarantino", "Masterpiece"],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-5"
+    }
+]
