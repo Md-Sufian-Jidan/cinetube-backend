@@ -59,10 +59,7 @@ const toggleLike = catchAsync(async (req: Request, res: Response) => {
 
 const createComment = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user!.userId;
-    const result = await ReviewService.createCommentOnReview({
-        ...req.body,
-        userId,
-    });
+    const result = await ReviewService.createCommentOnReview(userId, req.body);
 
     sendResponse(res, {
         statusCode: status.CREATED,

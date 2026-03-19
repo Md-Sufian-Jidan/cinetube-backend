@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import AppError from "../../errors/AppError";
 import status from "http-status";
-import { IReview, IUpdateReview } from "./review.interface";
+import { IComment, IReview, IUpdateReview } from "./review.interface";
 
 const createReviewInDB = async (payload: IReview) => {
     // Check if media exists
@@ -94,10 +94,41 @@ const toggleLikeOnReview = async (reviewId: string, userId: string) => {
     }
 };
 
-const createCommentOnReview = async (payload: any) => {
-    const result = await prisma.comment.create({
-        data: payload,
+const createCommentOnReview = async (userId: string, payload: IComment) => {
+    const review = await prisma.review.findUnique({
+        where: { id: payload.reviewId },
     });
+
+    if (!review) {
+        throw new AppError(status.NOT_FOUND, "Review not found");
+    }
+
+    if (payload.parentId) {
+        const parentComment = await prisma.comment.findUnique({
+            where: { id: payload.parentId },
+        });
+
+        if (!parentComment) {
+            throw new AppError(status.NOT_FOUND, "Parent comment not found");
+        }
+
+        if (parentComment.reviewId !== payload.reviewId) {
+            throw new AppError(
+                status.BAD_REQUEST,
+                "Parent comment does not belong to this review"
+            );
+        }
+    }
+
+    const result = await prisma.comment.create({
+        data: {
+            content: payload.content,
+            reviewId: payload.reviewId,
+            parentId: payload.parentId || null,
+            userId,
+        },
+    });
+
     return result;
 };
 

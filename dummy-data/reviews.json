@@ -31,5 +31,27 @@
         ],
         "isSpoiler": true,
         "mediaId": "placeholder-media-id-3"
+    },
+    {
+        "rating": 7,
+        "content": "Stranger Things has a great 80s vibe. The kids are great actors, but some plot points felt a bit repetitive in later seasons.",
+        "tags": [
+            "Nostalgia",
+            "80s",
+            "Mystery"
+        ],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-4"
+    },
+    {
+        "rating": 9,
+        "content": "Pulp Fiction is a cult classic for a reason. Tarantino's dialogue is sharp and the non-linear storytelling is brilliant.",
+        "tags": [
+            "Cult Classic",
+            "Tarantino",
+            "Masterpiece"
+        ],
+        "isSpoiler": false,
+        "mediaId": "placeholder-media-id-5"
     }
 ]
