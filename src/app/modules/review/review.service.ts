@@ -2,6 +2,7 @@ import { prisma } from "../../lib/prisma";
 import AppError from "../../errors/AppError";
 import status from "http-status";
 import { IComment, IReview, IUpdateReview } from "./review.interface";
+import { ReviewStatus } from "../../../generated/prisma/enums";
 
 const createReviewInDB = async (payload: IReview) => {
     // Check if media exists
@@ -136,7 +137,7 @@ const getReviewsForMedia = async (mediaId: string) => {
     const result = await prisma.review.findMany({
         where: {
             mediaId,
-            status: "PUBLISHED",
+            status: ReviewStatus.PUBLISHED,
         },
         include: {
             user: {

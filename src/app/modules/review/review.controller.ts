@@ -72,6 +72,7 @@ const createComment = catchAsync(async (req: Request, res: Response) => {
 const getMediaReviews = catchAsync(async (req: Request, res: Response) => {
     const { mediaId } = req.params;
     const result = await ReviewService.getReviewsForMedia(mediaId as string);
+
     sendResponse(res, {
         statusCode: status.OK,
         success: true,
