@@ -124,6 +124,19 @@ const handleStripeWebhook = async (sig: string, rawBody: string | Buffer) => {
         });
     }
 
+    if (event.type === "payment_intent.payment_failed") {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+
+        await prisma.payment.create({
+            data: {
+                userId: paymentIntent.metadata.userId,
+                amount: paymentIntent.amount / 100,
+                status: PaymentStatus.FAILED,
+                stripeId: paymentIntent.id,
+            },
+        });
+    }
+
     return { received: true };
 };
 

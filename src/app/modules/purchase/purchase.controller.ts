@@ -17,28 +17,14 @@ const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-const subscribeToPlan = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.user!.userId;
-    const { planId } = req.body;
-    const result = await PaymentService.createSubscription(userId, planId);
-
-    sendResponse(res, {
-        statusCode: status.CREATED,
-        success: true,
-        message: "Subscription created successfully",
-        data: result,
-    });
-});
-
 const handleWebhook = catchAsync(async (req: any, res: Response) => {
     const sig = req.headers["stripe-signature"] as string;
-    const result = await PaymentService.handleStripeWebhook(sig, req.rawBody);
+    const result = await PaymentService.handleStripeWebhook(sig, req.body);
 
     res.status(status.OK).json(result);
 });
 
 export const PurchaseController = {
     createPaymentIntent,
-    subscribeToPlan,
     handleWebhook,
 };

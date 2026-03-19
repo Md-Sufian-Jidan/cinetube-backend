@@ -15,13 +15,6 @@ router.post(
 );
 
 router.post(
-    "/subscribe",
-    checkAuth(UserRole.USER, UserRole.ADMIN),
-    validateRequest(PurchaseValidation.createSubscriptionValidationSchema),
-    PurchaseController.subscribeToPlan
-);
-
-router.post(
     "/webhook",
     PurchaseController.handleWebhook
 );
