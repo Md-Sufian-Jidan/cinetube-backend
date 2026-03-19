@@ -8,22 +8,20 @@ import status from 'http-status';
 import router from './app/routes';
 import { sendResponse } from './app/utils/sendResponse';
 import { env } from './app/config/env';
+import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 
-app.all("/api/auth/*any", toNodeHandler(auth));
 // parsers
 app.use(express.json({ limit: "16kb" }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
 app.use(cors({
   origin: [env.FRONTEND_URL, env.BETTER_AUTH_URL, "http://localhost:3000", "http://localhost:7000"],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "cookie"],
+  credentials: true
 }));
-
-// application routes
-app.use('/api/v1', router);
+app.use(cookieParser());
 
 app.get('/', (req: Request, res: Response) => {
   sendResponse(res, {
@@ -44,6 +42,9 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
+app.all("/api/auth/*any", toNodeHandler(auth));
+// application routes
+app.use('/api/v1', router);
 app.use(globalErrorHandler);
 app.use(notFound);
 

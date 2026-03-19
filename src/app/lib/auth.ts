@@ -69,4 +69,13 @@ export const auth = betterAuth({
             clientSecret: env.GITHUB_CLIENT_SECRET,
         },
     },
+
+    advanced: {
+        cookiePrefix: "cinetube",
+        defaultCookieAttributes: {
+            sameSite: "lax",
+            secure: false,    // false in dev (HTTP), true in prod (HTTPS)
+            httpOnly: true,
+        }
+    }
 });

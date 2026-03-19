@@ -1,0 +1,232 @@
+[
+    {
+        "title": "Inception",
+        "synopsis": "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+        "releaseYear": 2010,
+        "director": "Christopher Nolan",
+        "type": "MOVIE",
+        "pricing": "PREMIUM",
+        "streamingLink": "https://www.netflix.com/title/70131314",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/edv5CZvnc0U9Ydn3A67607Q7oQ2.jpg",
+        "genres": ["Sci-Fi", "Action", "Adventure"],
+        "cast": [
+            {
+                "name": "Leonardo DiCaprio",
+                "role": "ACTOR",
+                "bio": "A multi-award winning actor known for his diverse roles."
+            },
+            {
+                "name": "Christopher Nolan",
+                "role": "DIRECTOR",
+                "bio": "Renowned for his complex storytelling and visual style."
+            }
+        ]
+    },
+    {
+        "title": "Breaking Bad",
+        "synopsis": "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine in order to secure his family's future.",
+        "releaseYear": 2008,
+        "director": "Vince Gilligan",
+        "type": "SERIES",
+        "pricing": "PREMIUM",
+        "streamingLink": "https://www.netflix.com/title/70143836",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ggm8bbEA9gnxa9KiYvH0o9ihr2W.jpg",
+        "genres": ["Crime", "Drama", "Thriller"],
+        "cast": [
+            {
+                "name": "Bryan Cranston",
+                "role": "ACTOR",
+                "bio": "Known for his role as Walter White."
+            },
+            {
+                "name": "Aaron Paul",
+                "role": "ACTOR",
+                "bio": "Known for his role as Jesse Pinkman."
+            }
+        ]
+    },
+    {
+        "title": "The Dark Knight",
+        "synopsis": "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+        "releaseYear": 2008,
+        "director": "Christopher Nolan",
+        "type": "MOVIE",
+        "pricing": "FREE",
+        "streamingLink": "https://www.hbo.com/movies/the-dark-knight",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDr9p1v3hvZBnbiBRXm.jpg",
+        "genres": ["Action", "Crime", "Drama"],
+        "cast": [
+            {
+                "name": "Christian Bale",
+                "role": "ACTOR",
+                "bio": "Known for his intense physical transformations."
+            },
+            {
+                "name": "Heath Ledger",
+                "role": "ACTOR",
+                "bio": "Won a posthumous Oscar for his role as the Joker."
+            }
+        ]
+    },
+    {
+        "title": "Stranger Things",
+        "synopsis": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+        "releaseYear": 2016,
+        "director": "The Duffer Brothers",
+        "type": "SERIES",
+        "pricing": "PREMIUM",
+        "streamingLink": "https://www.netflix.com/title/80057281",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/49WJfev0moxmBEEpA7R690PjH6m.jpg",
+        "genres": ["Drama", "Fantasy", "Horror"],
+        "cast": [
+            {
+                "name": "Millie Bobby Brown",
+                "role": "ACTOR",
+                "bio": "Rose to fame for her role as Eleven."
+            },
+            {
+                "name": "Winona Ryder",
+                "role": "ACTOR",
+                "bio": "A veteran actress with a long career in Hollywood."
+            }
+        ]
+    },
+    {
+        "title": "Pulp Fiction",
+        "synopsis": "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+        "releaseYear": 1994,
+        "director": "Quentin Tarantino",
+        "type": "MOVIE",
+        "pricing": "FREE",
+        "streamingLink": "https://www.amazon.com/Pulp-Fiction-John-Travolta/dp/B001CEE1Y2",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/d5iIl9h9F9D4oP9Gq1o9Gq1o9Gq.jpg",
+        "genres": ["Crime", "Drama"],
+        "cast": [
+            {
+                "name": "John Travolta",
+                "role": "ACTOR",
+                "bio": "Known for his roles in Saturday Night Fever and Grease."
+            },
+            {
+                "name": "Samuel L. Jackson",
+                "role": "ACTOR",
+                "bio": "Known for his role as Jules Winnfield."
+            }
+        ]
+    },
+    {
+        "title": "Friends",
+        "synopsis": "Follows the personal and professional lives of six twenty to thirty-something-year-old friends living in Manhattan.",
+        "releaseYear": 1994,
+        "director": "David Crane & Marta Kauffman",
+        "type": "SERIES",
+        "pricing": "FREE",
+        "streamingLink": "https://www.hbo.com/series/friends",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/f496p9HiSms5p6gJu2SIvXnSFA4.jpg",
+        "genres": ["Comedy", "Romance"],
+        "cast": [
+            {
+                "name": "Jennifer Aniston",
+                "role": "ACTOR",
+                "bio": "Known for her role as Rachel Green."
+            },
+            {
+                "name": "Courteney Cox",
+                "role": "ACTOR",
+                "bio": "Known for her role as Monica Geller."
+            }
+        ]
+    },
+    {
+        "title": "Interstellar",
+        "synopsis": "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+        "releaseYear": 2014,
+        "director": "Christopher Nolan",
+        "type": "MOVIE",
+        "pricing": "PREMIUM",
+        "streamingLink": "https://www.netflix.com/title/70305903",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6vCU67oYqZ3ft.jpg",
+        "genres": ["Adventure", "Drama", "Sci-Fi"],
+        "cast": [
+            {
+                "name": "Matthew McConaughey",
+                "role": "ACTOR",
+                "bio": "Won an Oscar for Dallas Buyers Club."
+            },
+            {
+                "name": "Anne Hathaway",
+                "role": "ACTOR",
+                "bio": "Known for The Devil Wears Prada and Les Misérables."
+            }
+        ]
+    },
+    {
+        "title": "The Office",
+        "synopsis": "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
+        "releaseYear": 2005,
+        "director": "Greg Daniels",
+        "type": "SERIES",
+        "pricing": "FREE",
+        "streamingLink": "https://www.peacocktv.com/stream-tv/the-office",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7D98K66Y7O6pWM5B8jA3rCqZkYg.jpg",
+        "genres": ["Comedy"],
+        "cast": [
+            {
+                "name": "Steve Carell",
+                "role": "ACTOR",
+                "bio": "Known for his role as Michael Scott."
+            },
+            {
+                "name": "John Krasinski",
+                "role": "ACTOR",
+                "bio": "Known for his role as Jim Halpert."
+            }
+        ]
+    },
+    {
+        "title": "The Matrix",
+        "synopsis": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.",
+        "releaseYear": 1999,
+        "director": "Lana Wachowski",
+        "type": "MOVIE",
+        "pricing": "FREE",
+        "streamingLink": "https://www.hbo.com/movies/the-matrix",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/f89U3Y9Y9Y9Y9Y9Y9Y9Y9Y9Y9Y.jpg",
+        "genres": ["Action", "Sci-Fi"],
+        "cast": [
+            {
+                "name": "Keanu Reeves",
+                "role": "ACTOR",
+                "bio": "Known for his roles in The Matrix and John Wick."
+            },
+            {
+                "name": "Laurence Fishburne",
+                "role": "ACTOR",
+                "bio": "Known for his role as Morpheus."
+            }
+        ]
+    },
+    {
+        "title": "Sherlock",
+        "synopsis": "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
+        "releaseYear": 2010,
+        "director": "Mark Gatiss & Steven Moffat",
+        "type": "SERIES",
+        "pricing": "PREMIUM",
+        "streamingLink": "https://www.netflix.com/title/70202589",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/789U3Y9Y9Y9Y9Y9Y9Y9Y9Y9Y9Y.jpg",
+        "genres": ["Crime", "Drama", "Mystery"],
+        "cast": [
+            {
+                "name": "Benedict Cumberbatch",
+                "role": "ACTOR",
+                "bio": "Known for his role as Sherlock Holmes."
+            },
+            {
+                "name": "Martin Freeman",
+                "role": "ACTOR",
+                "bio": "Known for his role as John Watson."
+            }
+        ]
+    }
+]

@@ -3,12 +3,14 @@ import { Status, UserRole } from "../../generated/prisma/enums";
 import { auth } from "../lib/auth";
 import AppError from "../errors/AppError";
 import status from "http-status";
+import { fromNodeHeaders } from "better-auth/node";
 
 export const checkAuth = (...requiredRoles: UserRole[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
+            const headers = fromNodeHeaders(req.headers);
             const session = await auth.api.getSession({
-                headers: req.headers as HeadersInit,
+                headers
             });
 
             if (!session) {
@@ -17,17 +19,11 @@ export const checkAuth = (...requiredRoles: UserRole[]) => {
 
 
             if (!session.user.emailVerified) {
-                throw new AppError(
-                    status.FORBIDDEN,
-                    "Email verification required to access this resource. Please verfiy your email!",
-                );
+                throw new AppError(status.FORBIDDEN, "Email verification required to access this resource. Please verfiy your email!");
             }
 
             if (session.user.status === Status.INACTIVE || session.user.status === Status.BLOCKED) {
-                throw new AppError(
-                    status.FORBIDDEN,
-                    "Your account is not active. Please contact the admin for assistance.",
-                );
+                throw new AppError(status.FORBIDDEN, "Your account is not active. Please contact the admin for assistance.");
             }
 
             const user = session.user;

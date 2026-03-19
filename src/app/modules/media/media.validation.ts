@@ -3,21 +3,11 @@ import { MediaType, MediaPricing, CastRole } from "../../../generated/prisma/enu
 
 const createMediaValidationSchema = z.object({
     body: z.object({
-        title: z.string({
-            error: "Title is required",
-        }),
-        synopsis: z.string({
-            error: "Synopsis is required",
-        }),
-        releaseYear: z.number({
-            error: "Release year is required",
-        }),
-        director: z.string({
-            error: "Director is required",
-        }),
-        type: z.nativeEnum(MediaType, {
-            error: "Media type is required",
-        }),
+        title: z.string({ error: "Title is required" }),
+        synopsis: z.string({ error: "Synopsis is required" }),
+        releaseYear: z.number({ error: "Release year is required" }),
+        director: z.string({ error: "Director is required" }),
+        type: z.nativeEnum(MediaType, { error: "Media type is required" }),
         pricing: z.nativeEnum(MediaPricing).default(MediaPricing.FREE),
         streamingLink: z.string().url().optional(),
         posterUrl: z.string().url().optional(),

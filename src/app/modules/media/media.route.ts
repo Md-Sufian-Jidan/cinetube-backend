@@ -21,6 +21,7 @@ router.get(
 
 router.get(
     "/:id",
+    checkAuth(UserRole.ADMIN, UserRole.USER),
     MediaController.getSingleMedia
 );
 
