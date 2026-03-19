@@ -18,6 +18,7 @@ model User {
   watchlist     Watchlist[]
   subscriptions UserSubscription[]
   purchases     Purchase[]
+  payments      Payment[]
 
   @@unique([email])
   @@map("user")

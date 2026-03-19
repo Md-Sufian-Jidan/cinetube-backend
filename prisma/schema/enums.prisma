@@ -41,3 +41,9 @@ enum ReviewStatus {
   UNPUBLISHED
 }
 
+enum PaymentStatus {
+  SUCCESS
+  FAILED
+  PENDING
+}
+

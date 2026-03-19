@@ -2,11 +2,12 @@ import { Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import status from "http-status";
-import { PurchaseService } from "./purchase.service";
+import { PaymentService } from "./purchase.service";
 
 const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
-    const { amount } = req.body;
-    const result = await PurchaseService.createPaymentIntent(amount);
+    const userId = req.user!.userId;
+    const { planId } = req.body;
+    const result = await PaymentService.createPaymentIntent(userId, planId);
 
     sendResponse(res, {
         statusCode: status.OK,
@@ -19,7 +20,7 @@ const createPaymentIntent = catchAsync(async (req: Request, res: Response) => {
 const subscribeToPlan = catchAsync(async (req: Request, res: Response) => {
     const userId = req.user!.userId;
     const { planId } = req.body;
-    const result = await PurchaseService.subscribeToPlan(userId, planId);
+    const result = await PaymentService.createSubscription(userId, planId);
 
     sendResponse(res, {
         statusCode: status.CREATED,
@@ -29,7 +30,15 @@ const subscribeToPlan = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
+const handleWebhook = catchAsync(async (req: any, res: Response) => {
+    const sig = req.headers["stripe-signature"] as string;
+    const result = await PaymentService.handleStripeWebhook(sig, req.rawBody);
+
+    res.status(status.OK).json(result);
+});
+
 export const PurchaseController = {
     createPaymentIntent,
     subscribeToPlan,
+    handleWebhook,
 };

@@ -20,7 +20,7 @@ const routes = [
         route: WatchlistRoutes
     },
     {
-        path: "/purchase",
+        path: "/payment",
         route: PurchaseRoutes
     }
 ];

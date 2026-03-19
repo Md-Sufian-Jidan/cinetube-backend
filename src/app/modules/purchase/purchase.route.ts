@@ -21,4 +21,9 @@ router.post(
     PurchaseController.subscribeToPlan
 );
 
+router.post(
+    "/webhook",
+    PurchaseController.handleWebhook
+);
+
 export const PurchaseRoutes = router;

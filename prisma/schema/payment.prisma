@@ -48,3 +48,17 @@ model Purchase {
 
   @@map("purchase")
 }
+
+model Payment {
+  id        String        @id @default(uuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id])
+  amount    Float
+  status    PaymentStatus @default(PENDING)
+  stripeId  String        @unique
+  
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@map("payment")
+}
