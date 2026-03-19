@@ -1,7 +1,7 @@
 import { prisma } from "../../lib/prisma";
 import AppError from "../../errors/AppError";
 import status from "http-status";
-import { IReview } from "./review.interface";
+import { IReview, IUpdateReview } from "./review.interface";
 
 const createReviewInDB = async (payload: IReview) => {
     // Check if media exists
@@ -19,7 +19,7 @@ const createReviewInDB = async (payload: IReview) => {
     return result;
 };
 
-const updateReviewInDB = async (id: string, userId: string, payload: any) => {
+const updateReviewInDB = async (id: string, payload: IUpdateReview) => {
     const review = await prisma.review.findUnique({
         where: { id },
     });
@@ -28,7 +28,7 @@ const updateReviewInDB = async (id: string, userId: string, payload: any) => {
         throw new AppError(status.NOT_FOUND, "Review not found");
     }
 
-    if (review.userId !== userId) {
+    if (review.userId !== payload.userId) {
         throw new AppError(status.FORBIDDEN, "You can only update your own reviews!");
     }
 

@@ -14,7 +14,10 @@ router.post(
     ReviewController.createReview
 );
 
-router.get("/media/:mediaId", ReviewController.getMediaReviews);
+router.get(
+    "/media/:mediaId",
+    ReviewController.getMediaReviews
+);
 
 router.patch(
     "/:id",

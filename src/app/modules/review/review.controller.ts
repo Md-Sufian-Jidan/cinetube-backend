@@ -20,9 +20,8 @@ const createReview = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateReview = catchAsync(async (req: Request, res: Response) => {
-    const userId = req.user!.userId;
     const { id } = req.params;
-    const result = await ReviewService.updateReviewInDB(id as string, userId, req.body);
+    const result = await ReviewService.updateReviewInDB(id as string, req.body);
 
     sendResponse(res, {
         statusCode: status.OK,
