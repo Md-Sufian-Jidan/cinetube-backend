@@ -3,6 +3,7 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { prisma } from "./prisma";
 import { env } from "../config/env";
 import { Status, UserRole } from "../../generated/prisma/enums";
+import { sendEmail } from "../utils/email";
 
 export const auth = betterAuth({
     baseURL: env.BETTER_AUTH_URL,
@@ -10,12 +11,35 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: "postgresql", // or "mysql", "postgresql", ...etc
     }),
+
     emailAndPassword: {
         enabled: true,
         minPasswordLength: 6,
         autoSignIn: false,
         requireEmailVerification: true,
+        sendResetPassword: async ({ user, url }) => {
+            console.log(`Sending reset password email to ${user.email}`);
+            console.log(`Reset password URL: ${url}`);
+            // In production, use an email service like Resend or Nodemailer
+        },
     },
+
+    emailVerification: {
+        sendOnSignUp: true,
+        autoSignInAfterVerification: false,
+        sendVerificationEmail: async ({ user, url }) => {
+            await sendEmail({
+                to: user.email,
+                subject: "Verify Your Email - CineTube",
+                templateName: "verificationEmail",
+                templateData: {
+                    user,
+                    verificationURL: url,
+                },
+            });
+        },
+    },
+
     user: {
         additionalFields: {
             role: {
@@ -30,6 +54,7 @@ export const auth = betterAuth({
             },
         },
     },
+
     trustedOrigins: [
         "http://localhost:3000",
         "http://localhost:5000",

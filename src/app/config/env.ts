@@ -15,6 +15,13 @@ interface EnvConfig {
   ADMIN_PASSWORD: string;
   ADMIN_EMAIL: string;
   FRONTEND_URL: string;
+  EMAIL_SENDER: {
+    SMTP_HOST: string;
+    SMTP_PORT: string;
+    SMTP_USER: string;
+    SMTP_PASS: string;
+    SMTP_FROM: string;
+  }
 }
 
 const loadEnvVar = (): EnvConfig => {
@@ -28,7 +35,12 @@ const loadEnvVar = (): EnvConfig => {
     'GITHUB_CLIENT_SECRET',
     'ADMIN_PASSWORD',
     'ADMIN_EMAIL',
-    'FRONTEND_URL'
+    'FRONTEND_URL',
+    'EMAIL_SENDER_SMTP_HOST',
+    'EMAIL_SENDER_SMTP_PORT',
+    'EMAIL_SENDER_SMTP_USER',
+    'EMAIL_SENDER_SMTP_PASS',
+    'EMAIL_SENDER_SMTP_FROM'
   ]
 
   envVariables.forEach((envVar) => {
@@ -48,6 +60,13 @@ const loadEnvVar = (): EnvConfig => {
     ADMIN_PASSWORD: process.env.ADMIN_PASSWORD!,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL!,
     FRONTEND_URL: process.env.FRONTEND_URL!,
+    EMAIL_SENDER: {
+      SMTP_HOST: process.env.EMAIL_SENDER_SMTP_HOST!,
+      SMTP_PORT: process.env.EMAIL_SENDER_SMTP_PORT!,
+      SMTP_USER: process.env.EMAIL_SENDER_SMTP_USER!,
+      SMTP_PASS: process.env.EMAIL_SENDER_SMTP_PASS!,
+      SMTP_FROM: process.env.EMAIL_SENDER_SMTP_FROM!,
+    },
   };
 };
 
