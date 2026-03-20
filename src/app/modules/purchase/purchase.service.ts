@@ -7,7 +7,6 @@ import { PlanDuration, PaymentStatus } from "../../../generated/prisma/enums";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
-// ✅ 1. Create Payment Intent
 const createPaymentIntent = async (userId: string, planId: string) => {
     const plan = await prisma.subscriptionPlan.findUnique({
         where: { id: planId },
@@ -32,7 +31,6 @@ const createPaymentIntent = async (userId: string, planId: string) => {
     };
 };
 
-// ✅ 2. Internal: Create Subscription (NOT EXPOSED)
 const createSubscription = async (userId: string, planId: string) => {
     const plan = await prisma.subscriptionPlan.findUnique({
         where: { id: planId },
@@ -76,7 +74,6 @@ const createSubscription = async (userId: string, planId: string) => {
     });
 };
 
-// ✅ 3. Webhook Handler
 const handleStripeWebhook = async (sig: string, rawBody: string | Buffer) => {
     let event: Stripe.Event;
 
@@ -90,7 +87,6 @@ const handleStripeWebhook = async (sig: string, rawBody: string | Buffer) => {
         throw new AppError(status.BAD_REQUEST, `Webhook signature verification failed: ${err.message}`);
     }
 
-    // 🔥 Handle successful payment
     if (event.type === "payment_intent.succeeded") {
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
 

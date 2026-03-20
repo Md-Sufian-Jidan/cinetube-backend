@@ -3,6 +3,7 @@ import { MediaRoutes } from "../modules/media/media.route";
 import { ReviewRoutes } from "../modules/review/review.route";
 import { WatchlistRoutes } from "../modules/watchlist/watchlist.route";
 import { PurchaseRoutes } from "../modules/purchase/purchase.route";
+import { AdminRoutes } from "../modules/admin/admin.route";
 
 const router = Router();
 
@@ -22,6 +23,10 @@ const routes = [
     {
         path: "/payment",
         route: PurchaseRoutes
+    },
+    {
+        path: "/admin",
+        route: AdminRoutes
     }
 ];
 
