@@ -22,7 +22,8 @@ const getAllMedia = catchAsync(async (req: Request, res: Response) => {
         statusCode: status.OK,
         success: true,
         message: "Media fetched successfully",
-        data: result,
+        meta: result.meta,
+        data: result.data,
     });
 });
 

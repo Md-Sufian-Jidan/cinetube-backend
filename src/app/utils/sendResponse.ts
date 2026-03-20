@@ -5,14 +5,21 @@ interface ApiResponse<T> {
     statusCode: number;
     message: string;
     data: T | null;
+    meta?: {
+        page: number;
+        limit: number;
+        total: number;
+        totalPage: number;
+    } | null;
 }
 
 export const sendResponse = <T>(res: Response, responseData: ApiResponse<T>) => {
-    const { success, statusCode, message, data } = responseData;
+    const { success, statusCode, message, data, meta } = responseData;
     res.status(statusCode).json({
         success,
         statusCode,
         message,
         data,
+        meta
     });
 };

@@ -31,7 +31,7 @@ const createMedia = async (payload: IMedia) => {
     return result;
 };
 
-const getAllMediaFromDB = async (filters: any) => {
+const getAllMediaFromDB = async (query: any) => {
     const {
         genre,
         releaseYear,
@@ -42,11 +42,16 @@ const getAllMediaFromDB = async (filters: any) => {
         maxRating,
         sortBy,
         sortOrder = "desc",
-    } = filters;
+        page = 1,
+        limit = 10,
+    } = query;
+
+    const skip = (Number(page) - 1) * Number(limit);
 
     const where: any = {};
 
-    // ✅ Genre filter (multiple support)
+    // ✅ FILTERS
+
     if (genre) {
         where.genres = {
             some: {
@@ -57,29 +62,32 @@ const getAllMediaFromDB = async (filters: any) => {
         };
     }
 
-    // ✅ Release year
     if (releaseYear) {
         where.releaseYear = Number(releaseYear);
     }
 
-    // ✅ Type
     if (type) {
         where.type = type;
     }
 
-    // ✅ Pricing
     if (pricing) {
         where.pricing = pricing;
     }
 
-    // ✅ Rating filter (if you have field like avgRating)
-    // if (minRating || maxRating) {
-    //     where.averageRating = {};
-    //     if (minRating) where.averageRating.gte = Number(minRating);
-    //     if (maxRating) where.averageRating.lte = Number(maxRating);
-    // }
+    // ✅ Rating Filter (IMPORTANT)
+    if (minRating || maxRating) {
+        where.averageRating = {};
 
-    // ✅ SEARCH (FULL POWER 🔥)
+        if (minRating) {
+            where.averageRating.gte = Number(minRating);
+        }
+
+        if (maxRating) {
+            where.averageRating.lte = Number(maxRating);
+        }
+    }
+
+    // ✅ SEARCH (POWERFUL 🔥)
     if (searchTerm) {
         where.OR = [
             {
@@ -90,12 +98,6 @@ const getAllMediaFromDB = async (filters: any) => {
             },
             {
                 director: {
-                    contains: searchTerm,
-                    mode: "insensitive",
-                },
-            },
-            {
-                streamingLink: {
                     contains: searchTerm,
                     mode: "insensitive",
                 },
@@ -136,35 +138,39 @@ const getAllMediaFromDB = async (filters: any) => {
 
     if (sortBy === "reviews") {
         orderBy = {
-            reviews: {
-                _count: sortOrder,
-            },
+            totalReviews: sortOrder,
         };
     }
 
-    const result = await prisma.media.findMany({
-        where,
-        orderBy,
-        include: {
-            genres: true,
-            cast: true,
-            _count: {
-                select: {
-                    reviews: true,
+    // ✅ MAIN QUERY + COUNT (for pagination)
+    const [data, total] = await Promise.all([
+        prisma.media.findMany({
+            where,
+            orderBy,
+            skip,
+            take: Number(limit),
+            include: {
+                genres: true,
+                cast: true,
+                _count: {
+                    select: {
+                        reviews: true,
+                    },
                 },
             },
-        },
-    });
+        }),
 
-    const averageRating = await prisma.review.aggregate({
-        _avg: {
-            rating: true,
-        },
-    });
+        prisma.media.count({ where }),
+    ]);
 
     return {
-        result,
-        averageRating,
+        meta: {
+            page: Number(page),
+            limit: Number(limit),
+            total,
+            totalPage: Math.ceil(total / Number(limit)),
+        },
+        data,
     };
 };
 
