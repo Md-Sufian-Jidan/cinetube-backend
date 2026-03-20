@@ -2,21 +2,13 @@ import { Router } from "express";
 import { PurchaseController } from "./purchase.controller";
 import { checkAuth } from "../../middlewares/checkAuth";
 import { UserRole } from "../../../generated/prisma/enums";
-import { validateRequest } from "../../middlewares/validateRequest";
-import { PurchaseValidation } from "./purchase.validation";
 
 const router = Router();
 
 router.post(
-    "/create-payment-intent",
+    "/create-checkout-session",
     checkAuth(UserRole.USER, UserRole.ADMIN),
-    validateRequest(PurchaseValidation.createPaymentIntentValidationSchema),
-    PurchaseController.createPaymentIntent
-);
-
-router.post(
-    "/webhook",
-    PurchaseController.handleWebhook
+    PurchaseController.createCheckoutSession
 );
 
 export const PurchaseRoutes = router;

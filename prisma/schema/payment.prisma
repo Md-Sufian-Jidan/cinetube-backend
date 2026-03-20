@@ -55,6 +55,7 @@ model Payment {
   user      User          @relation(fields: [userId], references: [id])
   amount    Float
   status    PaymentStatus @default(PENDING)
+  transactionId      String        @db.Uuid() @unique
   stripeId  String        @unique
   
   createdAt DateTime      @default(now())

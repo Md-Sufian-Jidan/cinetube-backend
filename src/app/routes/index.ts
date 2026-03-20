@@ -21,7 +21,7 @@ const routes = [
         route: WatchlistRoutes
     },
     {
-        path: "/payment",
+        path: "/purchase",
         route: PurchaseRoutes
     },
     {

@@ -3,11 +3,12 @@ import { env } from "../../config/env";
 import { prisma } from "../../lib/prisma";
 import AppError from "../../errors/AppError";
 import status from "http-status";
-import { PlanDuration, PaymentStatus } from "../../../generated/prisma/enums";
+import { PlanDuration, PaymentStatus, PurchaseType } from "../../../generated/prisma/enums";
+import { sendEmail } from "../../utils/email";
 
 const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
-const createPaymentIntent = async (userId: string, planId: string) => {
+const createCheckoutSession = async (userId: string, planId: string, mediaId?: string) => {
     const plan = await prisma.subscriptionPlan.findUnique({
         where: { id: planId },
     });
@@ -16,18 +17,34 @@ const createPaymentIntent = async (userId: string, planId: string) => {
         throw new AppError(status.NOT_FOUND, "Subscription plan not found");
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-        amount: Math.round(plan.price * 100),
-        currency: "usd",
-        automatic_payment_methods: { enabled: true },
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ["card"],
+        mode: "payment",
+        line_items: [
+            {
+                price_data: {
+                    currency: "usd",
+                    product_data: {
+                        name: plan.name,
+                        description: plan.description || "",
+                    },
+                    unit_amount: Math.round(plan.price * 100),
+                },
+                quantity: 1,
+            },
+        ],
+        success_url: `${env.FRONTEND_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+        cancel_url: `${env.FRONTEND_URL}/payment/cancel`,
         metadata: {
             userId,
             planId,
+            mediaId: mediaId || "",
+            type: mediaId ? PurchaseType.BUY : PurchaseType.RENT, // Assuming BUY for media, RENT for subscription if needed
         },
     });
 
     return {
-        clientSecret: paymentIntent.client_secret,
+        url: session.url,
     };
 };
 
@@ -74,70 +91,113 @@ const createSubscription = async (userId: string, planId: string) => {
     });
 };
 
-const handleStripeWebhook = async (sig: string, rawBody: string | Buffer) => {
-    let event: Stripe.Event;
+const handleStripeWebhookEvent = async (event: Stripe.Event) => {
+    const existingPayment = await prisma.payment.findFirst({
+        where: { stripeId: event.id },
+    });
 
-    try {
-        event = stripe.webhooks.constructEvent(
-            rawBody,
-            sig,
-            env.STRIPE_WEBHOOK_SECRET
-        );
-    } catch (err: any) {
-        throw new AppError(status.BAD_REQUEST, `Webhook signature verification failed: ${err.message}`);
+    if (existingPayment) {
+        console.log(`Payment already exists: ${event.id}`);
+        return { message: "Payment already exists" };
     }
 
-    if (event.type === "payment_intent.succeeded") {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    switch (event.type) {
+        case "checkout.session.completed": {
+            const session = event.data.object as Stripe.Checkout.Session;
+            const userId = session.metadata?.userId;
+            const planId = session.metadata?.planId;
+            const mediaId = session.metadata?.mediaId;
 
-        const userId = paymentIntent.metadata.userId;
-        const planId = paymentIntent.metadata.planId;
+            if (!userId || !planId) {
+                throw new AppError(status.BAD_REQUEST, "Invalid payment metadata");
+            }
 
-        if (!userId || !planId) {
-            throw new AppError(status.BAD_REQUEST, "Invalid payment metadata");
-        }
-
-        // ✅ prevent duplicate processing
-        const existingPayment = await prisma.payment.findFirst({
-            where: { stripeId: paymentIntent.id },
-        });
-
-        if (existingPayment) return { received: true };
-
-        await prisma.$transaction(async (tx) => {
-            // 💰 Save payment
-            await tx.payment.create({
-                data: {
-                    userId,
-                    amount: paymentIntent.amount / 100,
-                    status: PaymentStatus.SUCCESS,
-                    stripeId: paymentIntent.id,
-                },
+            const plan = await prisma.subscriptionPlan.findUnique({
+                where: { id: planId },
             });
 
-            // 🎟️ Create subscription
-            await createSubscription(userId, planId);
-        });
-    }
+            if (!plan) {
+                throw new AppError(status.NOT_FOUND, "Subscription plan not found");
+            }
 
-    if (event.type === "payment_intent.payment_failed") {
-        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+            });
 
-        await prisma.payment.create({
-            data: {
-                userId: paymentIntent.metadata.userId,
-                amount: paymentIntent.amount / 100,
-                status: PaymentStatus.FAILED,
-                stripeId: paymentIntent.id,
-            },
-        });
+            if (!user) {
+                throw new AppError(status.NOT_FOUND, "User not found");
+            }
+
+            await prisma.$transaction(async (tx) => {
+
+                await tx.purchase.create({
+                    data: {
+                        userId,
+                        mediaId: mediaId!,
+                        amount: plan.price,
+                        type: session.metadata?.type as PurchaseType,
+                    },
+                });
+
+                // 💰 Save payment
+                await tx.payment.create({
+                    data: {
+                        userId,
+                        amount: plan.price,
+                        status: PaymentStatus.SUCCESS,
+                        stripeId: session.id,
+                        transactionId: session.payment_intent as string,
+                    },
+                });
+
+                // 🎟️ Create subscription
+                await createSubscription(userId, planId);
+            });
+
+            // 📧 Send Confirmation Email
+            let mediaTitle = null;
+            if (mediaId) {
+                const media = await prisma.media.findUnique({ where: { id: mediaId } });
+                mediaTitle = media?.title;
+            }
+
+            await sendEmail({
+                to: user.email,
+                subject: "CineTube - Payment Confirmation",
+                templateName: "paymentConfirmation",
+                templateData: {
+                    name: user.name,
+                    amount: plan.price,
+                    planName: plan.name,
+                    transactionId: session.payment_intent as string,
+                    mediaTitle: mediaTitle,
+                }
+            });
+
+            break;
+        }
+
+        case "checkout.session.expired": {
+            const session = event.data.object;
+            console.log(`Checkout session expired`);
+            break;
+        }
+
+        case "payment_intent.payment_failed": {
+            const paymentIntent = event.data.object as Stripe.PaymentIntent;
+            console.log(`Payment intent ${paymentIntent.id} payment failed`);
+            break;
+        }
+
+        default:
+            console.log(`Unhandled event type: ${event.type}`);
     }
 
     return { received: true };
-};
+}
 
 export const PaymentService = {
-    createPaymentIntent,
-    handleStripeWebhook,
+    createCheckoutSession,
+    handleStripeWebhookEvent,
     createSubscription,
 };

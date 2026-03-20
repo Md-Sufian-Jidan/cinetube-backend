@@ -9,13 +9,15 @@ import router from './app/routes';
 import { sendResponse } from './app/utils/sendResponse';
 import { env } from './app/config/env';
 import cookieParser from 'cookie-parser';
+import { PurchaseController } from './app/modules/purchase/purchase.controller';
 
 const app: Application = express();
 
 // parsers
 app.use(
-  "/api/v1/payment/webhook",
-  express.raw({ type: "application/json" })
+  "/api/v1/purchase/webhook",
+  express.raw({ type: "application/json" }),
+  PurchaseController.handleWebhook
 );
 app.use(express.json({ limit: "16kb", }));
 app.use(express.urlencoded({ extended: true, limit: "16kb" }));
